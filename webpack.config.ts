@@ -17,7 +17,7 @@ const config: webpack.Configuration = {
     },
     plugins: [
         new HtmlWebpackPlugin(),
-        new ModuleLogger(),
+        new ModuleLogger('src', { exclude: ['index.html'] }),
         new StatoscopePlugin({
             saveStatsTo: 'stats.json',
             saveOnlyStats: false,
@@ -26,11 +26,19 @@ const config: webpack.Configuration = {
     ],
     resolve: {
         fallback: {
-            "buffer": require.resolve("buffer"),
-            "stream": false,
+            'buffer': require.resolve('buffer'),
+            'stream': false,
         },
+        extensions: ['.ts', '.js'],
     },
     module: {
+        rules: [
+            {
+                test: /\.(tsx|ts)$/,
+                // exclude: /node_modules/,
+                use: ['ts-loader'],
+            },
+        ],
     },
 };
 
