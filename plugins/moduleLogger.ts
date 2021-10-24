@@ -26,7 +26,6 @@ class ModuleLogger {
         });
         compiler.hooks.done.tap('ModuleLogger', async () => {
             let ans: string[] = [];
-            console.log(this.src);
 
             let readDir = async (DirPath: string) => {
                 const files = fs.readdirSync(DirPath, { withFileTypes: true });
@@ -37,14 +36,12 @@ class ModuleLogger {
                         await readDir(pathToObject);
                     } else {
                         if (!this.arr.has(pathToObject)) {
-                            console.log(pathToObject);
                             ans.push(pathToObject);
                         }
                     }
                 }
             };
             await readDir(this.src);
-            console.log(ans);
 
             fs.writeFile(path.resolve(compiler.root.context, 'unused'), JSON.stringify(ans), () => {});
             // console.log(this.arr);
